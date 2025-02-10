@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: my-service
+  namespace: default
+spec:
+  selector:
+    app: my-app
+  ports:
+    - protocol: TCP
+      port: 80 # this is the frontend port. (means this is the port that the service will listen on the cluster)
+      nodePort: 30001 # this is the port that the service will listen on the node, user will access it through this port.
+      targetPort: 80 # this is the port that the service will forward the traffic to. (means this is the container port in which the nginx runs in this case)
+  type: NodePort

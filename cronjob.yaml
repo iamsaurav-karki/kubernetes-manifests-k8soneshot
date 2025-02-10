@@ -1,0 +1,44 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: minute-backup
+  namespace: default
+spec:
+  schedule:
+    - cron: "* * * * *" # Run every minute
+  jobTemplate:
+    spec:
+      template:
+        metadata:
+          name: minute-backup
+          labels:
+            app: minute-backup
+        spec:
+          containers:
+            - name: batch-container
+              image: busybox:latest
+              command:
+                - sh
+                - -c
+                - >
+                  echo "backup started";
+                  mkdir -p /backup &&
+                  mkdir -p /data &&
+                  cp -r /data/* /backup &&
+                  echo "backup completed";
+              volumeMounts:
+                - name: data
+                  mountPath: /data
+                - name: backup
+                  mountPath: /backup
+          restartPolicy: onFailure
+          volumes:
+            - name: data
+              hostPath:
+                path: /data
+                type: DirectoryorCreate
+
+            - name: backup
+              hostPath:
+                path: /backup
+                type: DirectoryorCreate

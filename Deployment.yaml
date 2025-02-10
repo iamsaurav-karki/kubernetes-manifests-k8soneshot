@@ -1,0 +1,28 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: my-deployment
+  namespace: default
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: my-app
+  template:
+    metadata:
+      labels:
+        app: my-app
+    spec:
+      containers:
+        - name: my-container
+          image: nginx
+          ports:
+            - containerPort: 80
+          # assigning pvc
+          volumeMounts:
+            - name: my-pvc
+              mountPath: /var/www/html # here the data of the var/www/html will be stored in the pvc with pv name my-pvc path /mnt/data even if the pod is deleted
+      volumes:
+        - name: local-pv
+          persistentVolumeClaim:
+            claimName: local-pvc

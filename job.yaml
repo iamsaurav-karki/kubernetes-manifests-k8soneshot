@@ -1,0 +1,21 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: my-job
+  namespace: default
+spec:
+  completions: 1
+  parallelism: 1
+  selector:
+    matchLabels:
+      app: my-job
+  template:
+    metadata:
+      labels:
+        app: my-job
+    spec:
+      containers:
+        - name: batch-container
+          image: busybox:lastest
+          command: ["sh", "-c", "Hello, Kubernetes! && sleep 10"]
+      restartPolicy: Never

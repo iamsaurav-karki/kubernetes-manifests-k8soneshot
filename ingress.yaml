@@ -1,0 +1,24 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: nginx-notes-ingress
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /
+spec:
+  rules:
+    - http:
+        paths:
+          - path: /nginx
+            pathType: Prefix
+            backend:
+              service:
+                name: nginx-service
+                port:
+                  number: 80
+          - path: /app
+            pathType: Prefix
+            backend:
+              service:
+                name: my-service
+                port:
+                  number: 8000 # Fix: Previously, it was 8000. The service should expose port 80, as per ClusterIP.
