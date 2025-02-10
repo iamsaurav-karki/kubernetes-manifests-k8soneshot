@@ -21,7 +21,7 @@ spec:
           # assigning pvc
           volumeMounts:
             - name: my-pvc
-              mountPath: /var/www/html # here the data of the var/www/html will be stored in the pvc with pv name my-pvc path /mnt/data even if the pod is deleted
+              mountPath: /usr/share/nginx/html # here the data of the var/www/html will be stored in the pvc with pv name my-pvc path /mnt/data even if the pod is deleted
       volumes:
         - name: local-pv
           persistentVolumeClaim:
