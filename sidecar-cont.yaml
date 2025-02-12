@@ -1,0 +1,30 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: sidecar-test
+  namespace: default
+spec:
+  volumes:
+    - name: varlog
+      emptyDir: {}
+  containers:
+    - name: sidecar-container
+      image: busybox
+      command: ["sh", "-c", "cat /var/log/app.log"] # this is the sidecar container that displays the logs
+      volumeMounts:
+        - name: varlog
+          mountPath: /var/log
+
+    - name: main-container # this is the main container that writes the logs
+      image: busybox
+      command: [
+          "sh",
+          "-c",
+          "while
+          true; do echo $(date) >> /var/log/app.log; sleep 1; done",
+        ]
+      volumeMounts:
+        - name: varlog
+          mountPath: /var/log
+      ports:
+        - containerPort: 80

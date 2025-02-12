@@ -1,0 +1,11 @@
+kind: DevOpsBatch
+apiVersion: devops.com/v1
+metadata:
+  name: mycustomresource
+spec:
+  name: devops-learning
+  duration: 3 months
+  platform: saurav.com
+  type: devops
+  mode: online
+  description: This is a custom resource for DevOps learning
